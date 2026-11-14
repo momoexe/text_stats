@@ -18,13 +18,10 @@ check_file() {
     expected_lines=$5
 
     output=$(./bin/textstats "$file")
-    chars=$(printf '%s\n' "$output" | awk '/^chars:/ { print $2 }')
-    words=$(printf '%s\n' "$output" | awk '/^words:/ { print $2 }')
-    lines=$(printf '%s\n' "$output" | awk '/^lines:/ { print $2 }')
+    expected=$(printf '[TEXT STATS]\nchars: %5s\nwords: %5s\nlines: %5s' \
+        "$expected_chars" "$expected_words" "$expected_lines")
 
-    if [ "$chars" != "$expected_chars" ] ||
-       [ "$words" != "$expected_words" ] ||
-       [ "$lines" != "$expected_lines" ]; then
+    if [ "$output" != "$expected" ]; then
         printf 'FAIL: %s\n%s\n' "$name" "$output"
         exit 1
     fi
