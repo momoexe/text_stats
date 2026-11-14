@@ -50,3 +50,24 @@ if ./bin/textstats "$TEST_DIR/missing.txt" >/dev/null 2>&1; then
 fi
 
 printf 'PASS: missing file\n'
+
+check_usage_error() {
+    name=$1
+    shift
+
+    if ./bin/textstats "$@" >"$TEST_DIR/stdout" 2>"$TEST_DIR/stderr"; then
+        printf 'FAIL: %s should return an error\n' "$name"
+        exit 1
+    fi
+
+    if [ -s "$TEST_DIR/stdout" ] ||
+       ! grep -q 'Usage: textstats \[FILE\]' "$TEST_DIR/stderr"; then
+        printf 'FAIL: %s should print usage on stderr\n' "$name"
+        exit 1
+    fi
+
+    printf 'PASS: %s\n' "$name"
+}
+
+check_usage_error "missing argument"
+check_usage_error "too many arguments" "$TEST_DIR/empty.txt" extra

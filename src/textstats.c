@@ -5,13 +5,13 @@
 int main(int argc, char **argv)
 {
 
-    char *filename = NULL;
+    const char *filename = NULL;
 
     // OPTION HANDLING
     if (argc == 1)
     {
-        printf("Usage: textstats [FILE]\n");
-        return 0;
+        fprintf(stderr, "Usage: textstats [FILE]\n");
+        return 1;
     }
     else if (argc == 2)
     {
@@ -19,8 +19,8 @@ int main(int argc, char **argv)
     }
     else
     {
-        printf("Usage: textstats [FILE]\n");
-        return 0;
+        fprintf(stderr, "Usage: textstats [FILE]\n");
+        return 1;
     }
 
     // FILE HANDLING
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 
     if (fp == NULL)
     {
-        printf("textstats: %s: No such file\n", filename);
+        fprintf(stderr, "textstats: %s: No such file\n", filename);
         return 1;
     }
 
