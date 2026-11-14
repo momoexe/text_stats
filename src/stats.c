@@ -48,12 +48,16 @@ size_t count_words(FILE* fp){
 
 size_t count_lines(FILE* fp){
     size_t count = 0;
+    int sl = 0; // start line: a new line is started
     for(int c; (c = fgetc(fp)) != EOF;){
-        if(c == '\n'){
+        if(c != '\n' && !sl)
+            sl = 1;
+        else if(c == '\n'){
             count++;
+            sl = 0;
         }
     }
-    if(count != 0)
+    if(sl)
         count++;
 
     rewind(fp);
