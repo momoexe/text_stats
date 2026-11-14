@@ -10,56 +10,31 @@ void stats_init(Stats* st){
 }
 
 void stats_analyze(Stats* st, FILE* fp){
-    st->total_chars = count_chars(fp); 
-    st->total_words = count_words(fp); 
-    st->total_lines = count_lines(fp); 
-}
-
-size_t count_chars(FILE* fp){
-    size_t count = 0;
+    stats_init(st);
     
-    for(int c; (c = fgetc(fp)) != EOF;){
-        count++;
-    }
-    
-    rewind(fp);
-    return count;
-}
-
-size_t count_words(FILE* fp){
-    size_t count = 0;
     int sw = 0; // start word: a new word is started
+    int sl = 0; // start line: a new line is started
     for(int c; (c = fgetc(fp)) != EOF;){
+        st->total_chars++;
+
         if(!isspace(c) && !sw)
             sw = 1;
         else if(isspace(c) && sw){
-            count++;
+            st->total_words++;
             sw = 0;
         }
-    }
 
-    if(sw)
-        count++;
-
-    rewind(fp);
-    return count;
-}
-
-
-size_t count_lines(FILE* fp){
-    size_t count = 0;
-    int sl = 0; // start line: a new line is started
-    for(int c; (c = fgetc(fp)) != EOF;){
         if(c != '\n' && !sl)
             sl = 1;
         else if(c == '\n'){
-            count++;
+            st->total_lines++;
             sl = 0;
         }
     }
+    
+    if(sw)
+        st->total_words++;
     if(sl)
-        count++;
-
+        st->total_lines++;
     rewind(fp);
-    return count;
 }

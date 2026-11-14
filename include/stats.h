@@ -14,12 +14,6 @@ void stats_init(Stats* st);
 
 void stats_analyze(Stats* st, FILE* fp);
 
-size_t count_chars(FILE* fp);
-
-size_t count_words(FILE* fp);
-
-size_t count_lines(FILE* fp);
-
 
 
 

@@ -34,7 +34,6 @@ int main(int argc, char **argv)
 
     // ANALYZE
     Stats st;
-    stats_init(&st);
     stats_analyze(&st, fp);
 
     fclose(fp);
