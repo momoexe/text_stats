@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "stats.h"
+
+static void print_usage(FILE* stream);
 
 int main(int argc, char **argv)
 {
@@ -15,6 +18,11 @@ int main(int argc, char **argv)
     }
     else if (argc == 2)
     {
+        if(strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0){
+            print_usage(stdout);
+            return 0;
+        }
+
         filename = argv[1];
         FILE *fp = fopen(filename, "r");
 
@@ -30,7 +38,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        fprintf(stderr, "Usage: textstats [FILE]\n");
+        print_usage(stderr);
         return 1;
     }
 
@@ -41,4 +49,14 @@ int main(int argc, char **argv)
     printf("lines: %5zu\n", st.total_lines);
 
     return 0;
+}
+
+
+static void print_usage(FILE* stream){
+    fprintf(stream,
+            "Usage:\n"
+            "  textstats [FILE]\n"
+            "  textstats -h | --help\n"
+            "\n"
+            "Analyze FILE, or standard input if FILE is omitted.\n");
 }
