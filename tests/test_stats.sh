@@ -69,7 +69,7 @@ check_usage_error() {
 check_usage_error "too many arguments" "$TEST_DIR/empty.txt" extra
 
 help_output=$(./bin/textstats --help)
-expected_help=$(printf 'Usage:\n  textstats [FILE]\n  textstats -h | --help\n\nAnalyze FILE, or standard input if FILE is omitted.')
+expected_help=$(printf 'Usage:\n  textstats [OPTION]... [FILE]\n  textstats -h | --help\n\nAnalyze FILE, or standard input if FILE is omitted.\n\nOptions:\n  -c           show character count\n  -w           show word count\n  -l           show line count\n  -h, --help   show this help')
 
 if [ "$help_output" != "$expected_help" ]; then
     printf 'FAIL: help output\n%s\n' "$help_output"
@@ -77,6 +77,46 @@ if [ "$help_output" != "$expected_help" ]; then
 fi
 
 printf 'PASS: help output\n'
+
+chars_output=$(./bin/textstats -c "$TEST_DIR/two_lines.txt")
+expected_chars_output=$(printf '[TEXT STATS]\nchars: %5s' 10)
+
+if [ "$chars_output" != "$expected_chars_output" ]; then
+    printf 'FAIL: character option\n%s\n' "$chars_output"
+    exit 1
+fi
+
+printf 'PASS: character option\n'
+
+words_output=$(./bin/textstats -w "$TEST_DIR/two_lines.txt")
+expected_words_output=$(printf '[TEXT STATS]\nwords: %5s' 2)
+
+if [ "$words_output" != "$expected_words_output" ]; then
+    printf 'FAIL: word option\n%s\n' "$words_output"
+    exit 1
+fi
+
+printf 'PASS: word option\n'
+
+lines_output=$(./bin/textstats -l "$TEST_DIR/two_lines.txt")
+expected_lines_output=$(printf '[TEXT STATS]\nlines: %5s' 2)
+
+if [ "$lines_output" != "$expected_lines_output" ]; then
+    printf 'FAIL: line option\n%s\n' "$lines_output"
+    exit 1
+fi
+
+printf 'PASS: line option\n'
+
+combined_output=$(./bin/textstats -c -w "$TEST_DIR/two_lines.txt")
+expected_combined_output=$(printf '[TEXT STATS]\nchars: %5s\nwords: %5s' 10 2)
+
+if [ "$combined_output" != "$expected_combined_output" ]; then
+    printf 'FAIL: combined options\n%s\n' "$combined_output"
+    exit 1
+fi
+
+printf 'PASS: combined options\n'
 
 stdin_output=$(printf 'ciao\nmondo' | ./bin/textstats)
 expected_stdin=$(printf '[TEXT STATS]\nchars: %5s\nwords: %5s\nlines: %5s' 10 2 2)

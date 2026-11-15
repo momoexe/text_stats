@@ -37,11 +37,23 @@ gcc -g -std=c17 -Wall -Wextra -pedantic \
 
 ## Usage
 
-The program accepts one file at a time:
+The program accepts one file and optional counting options:
 
 ```bash
 ./bin/textstats file.txt
 ```
+
+Available counting options:
+
+```bash
+./bin/textstats -c file.txt      # characters
+./bin/textstats -w file.txt      # words
+./bin/textstats -l file.txt      # lines
+./bin/textstats -c -w file.txt  # characters and words
+```
+
+Without options, all three statistics are shown. Options can be combined, but
+only one file can be provided.
 
 If no file is provided, the program reads from standard input:
 
@@ -86,7 +98,8 @@ The tests cover:
 - blank lines;
 - missing files;
 - an incorrect number of arguments;
-- input from standard input.
+- input from standard input;
+- individual and combined counting options;
 - help output.
 
 <small>**Note**: The test file was written by AI.</small>
@@ -111,12 +124,4 @@ and lines at the same time.
 ## Current limitations
 
 - only one file can be analyzed at a time;
-- apart from `-h` and `--help`, command-line options such as `-c`, `-w`, and
-  `-l` are not available yet;
 - word counting follows a simple definition based on whitespace.
-
-## Next goals
-
-- accept multiple files;
-- add command-line options;
-- improve handling of non-ASCII characters.
