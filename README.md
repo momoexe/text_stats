@@ -49,6 +49,14 @@ If no file is provided, the program reads from standard input:
 cat file.txt | ./bin/textstats
 ```
 
+Show the usage information with:
+
+```bash
+./bin/textstats --help
+```
+
+The short form `-h` is also supported.
+
 Example output:
 
 ```text
@@ -79,6 +87,7 @@ The tests cover:
 - missing files;
 - an incorrect number of arguments;
 - input from standard input.
+- help output.
 
 <small>**Note**: The test file was written by AI.</small>
 
@@ -102,7 +111,8 @@ and lines at the same time.
 ## Current limitations
 
 - only one file can be analyzed at a time;
-- command-line options such as `-c`, `-w`, and `-l` are not available yet;
+- apart from `-h` and `--help`, command-line options such as `-c`, `-w`, and
+  `-l` are not available yet;
 - word counting follows a simple definition based on whitespace.
 
 ## Next goals

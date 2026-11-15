@@ -58,7 +58,7 @@ check_usage_error() {
     fi
 
     if [ -s "$TEST_DIR/stdout" ] ||
-       ! grep -q 'Usage: textstats \[FILE\]' "$TEST_DIR/stderr"; then
+       ! grep -q '^Usage:$' "$TEST_DIR/stderr"; then
         printf 'FAIL: %s should print usage on stderr\n' "$name"
         exit 1
     fi
@@ -67,6 +67,16 @@ check_usage_error() {
 }
 
 check_usage_error "too many arguments" "$TEST_DIR/empty.txt" extra
+
+help_output=$(./bin/textstats --help)
+expected_help=$(printf 'Usage:\n  textstats [FILE]\n  textstats -h | --help\n\nAnalyze FILE, or standard input if FILE is omitted.')
+
+if [ "$help_output" != "$expected_help" ]; then
+    printf 'FAIL: help output\n%s\n' "$help_output"
+    exit 1
+fi
+
+printf 'PASS: help output\n'
 
 stdin_output=$(printf 'ciao\nmondo' | ./bin/textstats)
 expected_stdin=$(printf '[TEXT STATS]\nchars: %5s\nwords: %5s\nlines: %5s' 10 2 2)
