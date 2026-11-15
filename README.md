@@ -43,6 +43,12 @@ The program accepts one file at a time:
 ./bin/textstats file.txt
 ```
 
+If no file is provided, the program reads from standard input:
+
+```bash
+cat file.txt | ./bin/textstats
+```
+
 Example output:
 
 ```text
@@ -71,7 +77,8 @@ The tests cover:
 - files with multiple lines;
 - blank lines;
 - missing files;
-- an incorrect number of arguments.
+- an incorrect number of arguments;
+- input from standard input.
 
 <small>**Note**: The test file was written by AI.</small>
 
@@ -96,12 +103,10 @@ and lines at the same time.
 
 - only one file can be analyzed at a time;
 - command-line options such as `-c`, `-w`, and `-l` are not available yet;
-- standard input is not supported yet;
 - word counting follows a simple definition based on whitespace.
 
 ## Next goals
 
-- support reading from standard input;
 - accept multiple files;
 - add command-line options;
 - improve handling of non-ASCII characters.

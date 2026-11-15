@@ -66,5 +66,14 @@ check_usage_error() {
     printf 'PASS: %s\n' "$name"
 }
 
-check_usage_error "missing argument"
 check_usage_error "too many arguments" "$TEST_DIR/empty.txt" extra
+
+stdin_output=$(printf 'ciao\nmondo' | ./bin/textstats)
+expected_stdin=$(printf '[TEXT STATS]\nchars: %5s\nwords: %5s\nlines: %5s' 10 2 2)
+
+if [ "$stdin_output" != "$expected_stdin" ]; then
+    printf 'FAIL: standard input\n%s\n' "$stdin_output"
+    exit 1
+fi
+
+printf 'PASS: standard input\n'
